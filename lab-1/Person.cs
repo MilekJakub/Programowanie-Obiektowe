@@ -2,6 +2,7 @@
 
 namespace lab_1
 {
+    //KOD Z PRZYKŁADÓW NA ZAJĘCIACH
     public class Person
     {
         private string firstName;
