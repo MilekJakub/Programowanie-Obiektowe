@@ -1,4 +1,7 @@
-﻿using System;
+﻿#nullable enable
+using System;
+using System.Linq;
+
 namespace lab_1
 {
     class Program
@@ -38,9 +41,33 @@ namespace lab_1
             Console.WriteLine($"{money1.Value} {money1.Currency} < {money2.Value} {money2.Currency} = {money1 < money2}");
             Console.WriteLine($"{money1.Value} {money1.Currency} > {money2.Value} {money2.Currency} = {money1 > money2}");
 
-            //ĆWICZENIE
-            Console.WriteLine("\nĆWICZENIE");
+            //ĆWICZENIE 7
+            Console.WriteLine("\nĆWICZENIE 7");
+            float fmoney = (float)money1;
+            Console.WriteLine(money1.Value + " " + money1.Currency);
 
+            //ĆWICZENIE 10
+            Console.WriteLine("\nĆWICZENIE 10");
+            Student[] register =
+            {
+                new Student{ Nazwisko="Kowalski", Imie="Jan", Średnia=3.0m },
+                new Student{ Nazwisko="Nowak", Imie="Krzysztof", Średnia=2.0m },
+                new Student{ Nazwisko="Kościszko", Imie="Tadeusz", Średnia=5.0m },
+                new Student{ Nazwisko="Zagłoba", Imie="Onfury", Średnia=4.0m },
+                new Student{ Nazwisko="Antolski", Imie="Bartosz", Średnia=3.5m }
+            };
+
+            Array.Sort(register);
+            register.ToList().ForEach(a => Console.WriteLine(a + " "));
+
+            //ĆWICZENIE 11
+            Console.WriteLine("\nĆWICZENIE 11");
+            var money3 = Money.OfWithException(100, Currency.PLN);
+            var result3 = money3.ToCurrency(Currency.USD, 4.1m);
+            var result4 = money3.ToCurrency(Currency.PLN, 4.1m);
+            Console.WriteLine($"money3: {money3.Value} {money3.Currency}");
+            Console.WriteLine($"result3: {result3.Value} {result3.Currency}");
+            Console.WriteLine($"result4: {result4.Value} {result4.Currency}");
         }
     }
 
@@ -187,6 +214,7 @@ namespace lab_1
         }
 
         //ĆWICZENIE 9
+        //Zaimplementuj metodę przelewania z jednego zbiornika do drugiego
         public bool refuel(Tank sourceTank, int amount)
         {
             if (sourceTank.Level <= 0)
@@ -199,6 +227,62 @@ namespace lab_1
             sourceTank.Level -= amount;
             Level += amount;
             return true;
+        }
+    }
+
+    //ĆWICZENIE 10
+    //Dla klasy Student zdefiniuj interfejs IComparable w jednej z poniższych wersji:
+    //Sortowanie wg nazwisk, imion, średniej
+    class Student : IComparable
+    {
+        public string Nazwisko { get; set; }
+        public string Imie { get; set; }
+        public decimal Średnia { get; set; }
+        public int CompareTo(Student? otherStudent)
+        {
+            if (ReferenceEquals(this, otherStudent))
+                return 0;
+            if (ReferenceEquals(null, otherStudent))
+                return 1;
+
+            var surnameComparision = Nazwisko.CompareTo(otherStudent.Nazwisko);
+            var nameComparision = Imie.CompareTo(otherStudent.Imie);
+
+            if (surnameComparision != 0)
+                return surnameComparision;
+
+            else if (nameComparision != 0)
+                return nameComparision;
+
+            else
+                return Średnia.CompareTo(otherStudent.Średnia);
+        }
+        public int CompareTo(object other)
+        {
+            if (ReferenceEquals(this, other))
+                return 0;
+            if (ReferenceEquals(null, other))
+                return 1;
+            return CompareTo((Student)other);
+        }
+
+        public override string ToString()
+        {
+            return $"{Nazwisko}, {Imie}, {Średnia}";
+        }
+    }
+
+    //ĆWICZENIE 11
+    //Zdefiniuj metodę rozszerzającą klasę Money, która przelicza kwotę na jej równoważną wartość w innej
+    //walucie na podstawie ceny jednej jednostki waluty docelowej
+    public static class MoneyExtension
+    {
+        public static Money ToCurrency(this Money money, Currency currency, decimal scaler)
+        {
+            if(money.Currency == currency)
+                return Money.OfWithException(money.Value * scaler, currency);
+
+            return Money.OfWithException(Math.Round(money.Value / scaler, 2), currency);
         }
     }
 }
