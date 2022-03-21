@@ -24,15 +24,27 @@
         //Console.WriteLine(counter);
         #endregion
 
+        #region ĆWICZENIE 3
         //ĆWICZENIE 3
         var aggregate = new ArrayIntAggregate();
         for (var iterator = aggregate.CreateIterator(); iterator.HasNext();)
         {
             Console.WriteLine(iterator.GetNext());
         }
+        #endregion
+
+        #region ZADANIE 6
+        //ZADANIE 6
+        var student = new Student() { FirstName = "Jakub", LastName = "Milek", StudentID = 1 };
+        var lecturer = new Lecturer() { FirstName = "Cezary", LastName = "Siwoń", AcademicDegree = "dr inż." };
+        var group = new StudentLectureGroup();
+        group.AddStudent(student);
+        group.SetLecturer(lecturer);
+        #endregion
     }
 }
 
+#region ĆWICZENIE 1
 //ĆWICZENIE 1
 public abstract class Vehicle
 {
@@ -83,7 +95,9 @@ class KickScooter
 {
 
 }
+#endregion
 
+#region ĆWICZENIE 2
 //ĆWICZENIE 2
 interface ISwimmingable
 {
@@ -111,7 +125,9 @@ class Wasp : IFlyable
         Console.WriteLine("Wasp is flying");
     }
 }
+#endregion
 
+#region ĆWICZENIE 3
 //ĆWICZENIE 3
 public abstract class Aggregate
 {
@@ -147,6 +163,8 @@ public sealed class ArrayIntIterator : Iterator
         return _index < _aggregate.array.Length;
     }
 }
+
+//Iterator zwracający elementy od ostatniego do pierwszego, np. dla {1,2,3,4} zwraca kolejno 4, 3, 2, 1
 public sealed class ArrayIntReversedIterator : Iterator
 {
     private int _index;
@@ -154,7 +172,7 @@ public sealed class ArrayIntReversedIterator : Iterator
     public ArrayIntReversedIterator(ArrayIntAggregate aggregate)
     {
         _aggregate = aggregate;
-        _index = _aggregate.array.Length;
+        _index = _aggregate.array.Length -1;
     }
     public override int GetNext()
     {
@@ -165,3 +183,37 @@ public sealed class ArrayIntReversedIterator : Iterator
         return _index >= 0;
     }
 }
+#endregion
+
+#region ZADANIE 6
+//ZADANIE 6
+class Person
+{
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+    public DateTime BirthDate { get; set; }
+}
+
+class Student : Person
+{
+    public int StudentID { get; set; }
+}
+
+class Lecturer : Person
+{
+    public string? AcademicDegree { get; set; }
+}
+
+class StudentLectureGroup
+{
+    public string? Name { get; set; }
+    public void AddStudent(Student student)
+    {
+        Console.WriteLine($"Adding student {student.FirstName} {student.LastName} with ID: {student.StudentID} to group.");
+    }
+    public void SetLecturer(Lecturer lecturer)
+    {
+        Console.WriteLine($"Adding {lecturer.AcademicDegree} {lecturer.FirstName} {lecturer.LastName} as lecturer of the group.");
+    }
+}
+#endregion
