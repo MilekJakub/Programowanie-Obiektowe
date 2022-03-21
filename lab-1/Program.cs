@@ -235,8 +235,8 @@ namespace lab_1
     //Sortowanie wg nazwisk, imion, średniej
     class Student : IComparable
     {
-        public string Nazwisko { get; set; }
-        public string Imie { get; set; }
+        public string? Nazwisko { get; set; }
+        public string? Imie { get; set; }
         public decimal Średnia { get; set; }
         public int CompareTo(Student? otherStudent)
         {
@@ -245,8 +245,8 @@ namespace lab_1
             if (ReferenceEquals(null, otherStudent))
                 return 1;
 
-            var surnameComparision = Nazwisko.CompareTo(otherStudent.Nazwisko);
-            var nameComparision = Imie.CompareTo(otherStudent.Imie);
+            var surnameComparision = Nazwisko!.CompareTo(otherStudent.Nazwisko);
+            var nameComparision = Imie!.CompareTo(otherStudent.Imie);
 
             if (surnameComparision != 0)
                 return surnameComparision;
@@ -257,7 +257,7 @@ namespace lab_1
             else
                 return Średnia.CompareTo(otherStudent.Średnia);
         }
-        public int CompareTo(object other)
+        public int CompareTo(object? other)
         {
             if (ReferenceEquals(this, other))
                 return 0;
