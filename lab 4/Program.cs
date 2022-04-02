@@ -43,7 +43,21 @@
         Console.WriteLine(Exercise2.DirectionTo(screen, (0, 1), 1));
         #endregion
 
+        #region Ćwiczenie 3
+        Car[] _cars = new Car[]
+        {
+            new Car(),
+            new Car(Model: "Fiat", true),
+            new Car(),
+            new Car(Power: 100),
+            new Car(Model: "Fiat", true),
+            new Car(Power: 125),
+            new Car()
+        };
 
+        Console.WriteLine(Exercise3.CarCounter(_cars));
+        //wywołanie CarCounter(Car[] cars) powinno zwrócić 3
+        #endregion
     }
 }
 
@@ -111,24 +125,24 @@ class Exercise2
         if (coordinates == (-1, -1))
             throw new ArgumentException($"Nie znaleziono punktu o wartości: {value}");
 
-        //TODO: Refactor
         if (point.Item1 > coordinates.Item1)
-            coordinates = (-1, coordinates.Item2);
+            coordinates.Item1 = -1;
 
         else if (point.Item1 < coordinates.Item1)
-            coordinates = (1, coordinates.Item2);
+            coordinates.Item1 = 1;
 
         else
             coordinates = (0, coordinates.Item2);
 
+
         if (point.Item2 > coordinates.Item2)
-            coordinates = (coordinates.Item1, -1);
+            coordinates.Item2 = -1;
 
         else if (point.Item2 < coordinates.Item2)
-            coordinates = (coordinates.Item1, 1);
+            coordinates.Item2 = 1;
 
         else
-            coordinates = (coordinates.Item1, 0);
+            coordinates.Item2 = 0;
 
         Direction8 direction = coordinates switch
         {
@@ -164,13 +178,27 @@ class Exercise2
 //     new Car()
 // };
 //wywołanie CarCounter(Car[] cars) powinno zwrócić 3
-record Car(string Model = "Audi", bool HasPlateNumber = false, int Power = 100);
+record Car(string Model = "", bool HasPlateNumber = false, int Power = 0);
 
 class Exercise3
 {
     public static int CarCounter(Car[] cars)
     {
-        throw new NotImplementedException();
+        int counter = 0;
+        foreach (var car in cars)
+        {
+            counter = 0;
+            foreach (var otherCar in cars)
+            {
+                if (car == otherCar)
+                {
+                    counter++;
+                    Console.WriteLine($"{car}:{counter}");
+                }
+            }
+        }
+
+        return counter;
     }
 }
 
