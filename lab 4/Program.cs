@@ -44,6 +44,7 @@
         #endregion
 
         #region Ćwiczenie 3
+        Console.WriteLine("\nĆwiczenie 3");
         Car[] _cars = new Car[]
         {
             new Car(),
@@ -51,12 +52,36 @@
             new Car(),
             new Car(Power: 100),
             new Car(Model: "Fiat", true),
+            new Car(Model: "Fiat", true),
+            new Car(Model: "Fiat", true),
+            new Car(Model: "Fiat", true),
+            new Car(Model: "Fiat", true),
+            new Car(Model: "Fiat", true),
+            new Car(Model: "Fiat", true),
+            new Car(Model: "Fiat", true),
+            new Car(Model: "Fiat", true),
             new Car(Power: 125),
             new Car()
         };
 
         Console.WriteLine(Exercise3.CarCounter(_cars));
-        //wywołanie CarCounter(Car[] cars) powinno zwrócić 3
+        #endregion
+
+        #region Ćwiczenie 4
+        Console.WriteLine("\nĆwiczenie 4");
+        Student[] students =
+        {
+            new Student("Kowal","Adam", 'A'),
+            new Student("Nowak","Ewa", 'A'),
+            new Student("Borowa","Ela", 'B'),
+            new Student("Kasztan","Ola", 'B'),
+            new Student("Maj","Franciszek", 'B'),
+            new Student("Antolski","Jan", 'C'),
+            new Student("Peroń","Henryk", 'C'),
+            new Student("Regucki","Mateusz", 'C'),
+            new Student("Doniec","Patryk", 'C'),
+        };
+        Exercise4.AssignStudentId(students);
         #endregion
     }
 }
@@ -104,6 +129,7 @@ class Exercise1
         return newPoint;
     }
 }
+
 //Cwiczenie 2
 class Exercise2
 {
@@ -164,63 +190,68 @@ class Exercise2
 }
 
 //Cwiczenie 3
-//Zdefiniuj metodę obliczającą liczbę najczęściej występujących aut w tablicy cars
-//Przykład
-//dla danych wejściowych
-// Car[] _cars = new Car[]
-// {
-//     new Car(),
-//     new Car(Model: "Fiat", true),
-//     new Car(),
-//     new Car(Power: 100),
-//     new Car(Model: "Fiat", true),
-//     new Car(Power: 125),
-//     new Car()
-// };
-//wywołanie CarCounter(Car[] cars) powinno zwrócić 3
 record Car(string Model = "", bool HasPlateNumber = false, int Power = 0);
-
 class Exercise3
 {
     public static int CarCounter(Car[] cars)
     {
         int counter = 0;
+        int max = 0;
+
         foreach (var car in cars)
         {
             counter = 0;
             foreach (var otherCar in cars)
             {
                 if (car == otherCar)
-                {
                     counter++;
-                    Console.WriteLine($"{car}:{counter}");
-                }
             }
+            if(max < counter)
+                max = counter;
         }
 
-        return counter;
+        return max;
     }
 }
 
-record Student(string LastName, string FirstName, char Group, string StudentId = "");
 //Cwiczenie 4
-//Zdefiniuj metodę AssignStudentId, która każdemu studentowi nadaje pole StudentId wg wzoru znak_grupy-trzycyfrowy-numer.
-//Przykład
-//dla danych wejściowych
-//Student[] students = {
-//  new Student("Kowal","Adam", 'A'),
-//  new Student("Nowak","Ewa", 'A')
-//};
-//po wywołaniu metody AssignStudentId(students);
-//w tablicy students otrzymamy:
-// Kowal Adam 'A' - 'A001'
-// Nowal Ewa 'A'  - 'A002'
-//Należy przyjąc, że są tylko trzy możliwe grupy: A, B i C
+record Student(string LastName, string FirstName, char Group, string StudentId = "");
 class Exercise4
 {
     public static void AssignStudentId(Student[] students)
     {
+        int[] groups = new int[] {1, 1, 1};
+        int A = 0, B = 1, C = 2;
 
+        for (int i = 0; i < students.Length; i++)   
+        {
+            char group = students[i].Group;
+            int groupNumber;
+            switch (group)
+            {
+                case 'A':
+                    groupNumber = groups[A];
+                    groups[A]++;
+                    break;
+                case 'B':
+                    groupNumber = groups[B];
+                    groups[B]++;
+                    break;
+                case 'C':
+                    groupNumber = groups[C];
+                    groups[C]++;
+                    break;
+                default:
+                    throw new ArgumentException();
+            }
+            string groupID = string.Format("{0:D3}", groupNumber);
+            var newStudent = students[i] with { StudentId = group.ToString() + groupID };
+            students[i] = newStudent;
+        }
+
+        foreach (var student in students)
+        {
+            Console.WriteLine($"{student.FirstName} {student.LastName} {student.Group} {student.StudentId}");
+        }
     }
 }
-
