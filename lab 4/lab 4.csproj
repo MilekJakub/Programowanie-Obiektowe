@@ -2,8 +2,15 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
+<<<<<<< HEAD
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>lab_4</RootNamespace>
+=======
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>lab_4</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+>>>>>>> 75f70dab518507fdac78178d087b5beb2ab162f0
   </PropertyGroup>
 
 </Project>
