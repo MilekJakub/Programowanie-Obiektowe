@@ -8,29 +8,19 @@ namespace lab_5
     {
         public static void AppMain()
         {
-            Exercise1<string> team = new Exercise1<string>() { Manager = "Adam", MemberA = "Ola", MemberB = "Ewa" };
-            foreach (var member in team)
-            {
-                Console.WriteLine(member);
-            }
+            //Exercise1<string> team = new Exercise1<string>() { Manager = "Adam", MemberA = "Ola", MemberB = "Ewa" };
+            //foreach (var member in team)
+            //{
+            //    Console.WriteLine(member);
+            //}
 
             CurrencyRates rates = new CurrencyRates();
             rates[Currency.EUR] = 4.6m;
-            Console.WriteLine(rates[Currency.EUR]);
+            Console.WriteLine(rates[Currency.EUR] + "\n");
+            CurrencyRates.ShowRates();;
         }
     }
     //Cwiczenie 1 (2 punkty)
-    //Zmodyfikuj klasę Exercise1 aby implementowała interfesj IEnumerable<T>
-    //Zdefiniuj metodę GetEnumerator, aby zwracał kolejno pola Manager, MemberA, MemberB
-    //Przykład
-    //Exercise1<string> team = new Exercise1(){ Manager: "Adam", MemberA: "Ola", MemberB: "Ewa"};
-    //foreach(var member in team){
-    //    Console.WriteLine(member);
-    //}
-    //otrzymamy na ekranie
-    //Adam
-    //Ola
-    //Ewa
     public class Exercise1<T> : IEnumerable<T>
     {
         public T Manager { get; init; }
@@ -62,14 +52,16 @@ namespace lab_5
 
     public enum Currency
     {
+        UNDEFINED,
         PLN,
         USD,
         EUR,
-        CHF
+        CHF,
+        GBP
     }
     class CurrencyRates
     {
-        private decimal[] _rates = new decimal[Enum.GetValues<Currency>().Length];
+        private static decimal[] _rates = new decimal[Enum.GetValues<Currency>().Length];
 
         public decimal this[Currency currency]
         {
@@ -82,12 +74,23 @@ namespace lab_5
                 _rates[(int)currency] = value;
             }
         }
+
+        public static void ShowRates()
+        {
+            Console.WriteLine("Currency rates:");
+            for (int i = 0; i < _rates.Length; i++)
+            {
+                Console.WriteLine($"{_rates[i]} \t{Enum.GetName(typeof(Currency), i)}");
+            }
+        }
     }
 
     //Cwiczenie 3
+    
     //Zdefiniuj enumerator zwracający kolejne liczby szesnastowe zapisane w łańcuchu o długości 8 znaków plus znaki 0x jako prefiks
     //Przykład 
     //0x00000000 0x00000001 0x00000002 0x00000003 ... 0x0000000A ... 0x000000010 ... 0xFFFFFFFF 
+    
     //Zdefiniuj metodę GetLimitedHex(int digitCount), która zwraca enumerator z liczbami o podanej liczbie cyfr.
     //Przykład wykorzystania metody
     // var limitedHex = hex.GetLimitedHex(4);
@@ -95,6 +98,7 @@ namespace lab_5
     // {
     //     Console.WriteLine(limitedHex.Current);
     // }
+   
     //Wyjście:
     //0x0000
     //0x0001
