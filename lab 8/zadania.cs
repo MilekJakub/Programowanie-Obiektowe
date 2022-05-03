@@ -133,22 +133,20 @@ class zadania
     //Zaimplementuja metodę, aby zwracała listę polskich maist posortowanych alfabetycznie
     public static List<City> PolishCities(IEnumerable<City> cities, IEnumerable<Country> countries)
     {
-        var result = (
-                 from city in cities
-                 join country in countries
-                 on city.CountryCode.ToUpper() equals country.Fips
-                 where city.CountryCode == "PL"
-                 orderby (city.Name)
-                 select city
-                 ).ToList();
+        var solution1 =
+            (from city in cities
+             join country in countries
+             on city.CountryCode.ToUpper() equals country.Fips
+             where city.CountryCode == "PL"
+             orderby (city.Name)
+             select city).ToList();
 
-        var result2 = (
-                  cities.Join(countries, city => city.CountryCode, country => country.Fips, (city, country) => city)
+        var solution2 = 
+            cities.Join(countries, city => city.CountryCode, country => country.Fips, (city, country) => city)
                   .Where(c => c.CountryCode == "PL")
-                  .OrderBy(city => city.Name)
-                  ).ToList();
+                  .OrderBy(city => city.Name);
 
-        return result2;
+        return solution2.ToList();
     }
 
     //Zadanie 2
@@ -157,13 +155,13 @@ class zadania
     public static IEnumerable<(string CountryCode, int CitiesCount)> CountryCities(IEnumerable<City> cities,
         IEnumerable<Country> countries)
     {
-        var result =
+        var solution =
         from city in cities
         group city by city.CountryCode into newCity
         orderby newCity.Key
         select (newCity.Key, cities.Count(c => c.CountryCode == newCity.Key));
 
-        return result;
+        return solution;
     }
 
     //Zadanie 3
@@ -172,7 +170,26 @@ class zadania
     public static IEnumerable<(string CountryName, string Capital, long CapitalPopulation)> Capitals(
         IEnumerable<City> cities, IEnumerable<Country> countries)
     {
-        throw new NotImplementedException();
+        var solution =
+        from city in cities
+        join country in countries
+        on city.CountryCode.ToUpper() equals country.Fips
+        where country.Capital == city.Name
+        group country by new
+        {
+            country.CountryName,
+            country.Capital,
+            city.Population
+        } into newCountry
+        orderby newCountry.Key.CountryName
+        select(newCountry.Key.CountryName, newCountry.Key.Capital, newCountry.Key.Population);
+
+        foreach (var item in solution)
+        {
+            Console.WriteLine(item);
+        }
+
+        return solution;
     }
 
     //Zadanie 4
@@ -216,7 +233,7 @@ class zadania
     //Zastosuj wyłącznie LINQ i metody Prepend i Append 
     public static IEnumerable<string> Tree(int height)
     {
-        
+
         throw new NotImplementedException();
     }
 
