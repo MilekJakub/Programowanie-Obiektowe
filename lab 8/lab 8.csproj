@@ -2,7 +2,11 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
+<<<<<<< HEAD
     <TargetFramework>net5.0</TargetFramework>
+=======
+    <TargetFramework>net6.0</TargetFramework>
+>>>>>>> f45d77114ad9abe312d5eaa3b326a6d3da55da5d
     <RootNamespace>lab_8</RootNamespace>
   </PropertyGroup>
 
